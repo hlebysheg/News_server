@@ -2,7 +2,7 @@ from flask import Flask, request, url_for, redirect, json, Response, jsonify
 from flask_sqlalchemy  import SQLAlchemy
 from flask.helpers import flash
 from datetime import datetime
-from flask_marshmallow import Marshmallow
+#from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user
@@ -57,7 +57,7 @@ def get_news_tag():
     start_id = int(request.args.get('start_id', None))
     end_id = int(request.args.get('end_id', None))
     username = str(request.args.get('username', None))
-    atricle = Article.query.filter_by(user_name = username).offset(start_id).limit(end_id+1 - start_id).all()
+    atricle = Article.query.filter_by(user_name = username).order_by(Article.id.desc()).offset(start_id).limit(end_id+1 - start_id).all()
     out = db_sample_to_json(atricle)
     response = Response(json.dumps(out), status=200)
     response.headers['Access-Control-Allow-Origin'] = '*'
